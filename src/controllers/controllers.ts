@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { IProduct, IUser } from "../interfaces";
+import { IProduct, IPurchaseRequestData, IUser, Purchase } from "../interfaces";
 import { listProductsService } from "../services/products.services";
+import { createPurchaseService } from "../services/purchase.services";
 import { listUsersService } from "../services/users.services";
 
 
@@ -14,4 +15,13 @@ const listProductsController = async (req: Request, res: Response): Promise<Resp
     return res.status(200).json(products)
 }
 
-export { listUsersController, listProductsController }
+const createPurchaseController = async (req: Request, res: Response): Promise<Response> => {
+    const purchaseData: IPurchaseRequestData = req.body
+
+    const purchaseValue: Purchase = await createPurchaseService(purchaseData)
+    return res.status(200).json(purchaseValue)
+}
+
+export { listUsersController, 
+        listProductsController,
+        createPurchaseController }

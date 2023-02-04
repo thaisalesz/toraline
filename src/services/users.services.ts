@@ -1,11 +1,14 @@
-import axios from "axios";
+import { api } from "../api";
+import { AppError } from "../errors";
 import { IUser } from "../interfaces";
 
 
 const listUsersService = async ():Promise<IUser[]> => {
-    const users = axios.get('https://mockend.com/juunegreiros/BE-test-api/users')
+    const users = api.get('/users')
     .then(res => res.data)
-    .catch(err => console.log(err))
+    .catch(err => {
+        throw new AppError(err.data)
+    })
     
     return users
 }

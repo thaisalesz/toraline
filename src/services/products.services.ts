@@ -1,11 +1,14 @@
-import axios from "axios";
+import { api } from "../api";
+import { AppError } from "../errors";
 import { IProduct } from "../interfaces";
 
 
 const listProductsService = async ():Promise<IProduct[]> => {
-    const products = axios.get('https://mockend.com/juunegreiros/BE-test-api/products')
+    const products = api.get('/products')
     .then(res => res.data)
-    .catch(err => console.log(err))
+    .catch(err => {
+        throw new AppError(err.data)
+    })
 
     return products
 }

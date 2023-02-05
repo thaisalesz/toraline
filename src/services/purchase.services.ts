@@ -1,5 +1,6 @@
 import { AppError } from "../errors";
 import { IProduct, IPurchaseRequestData, IUser, Purchase } from "../interfaces";
+import { calculatePurchaseTaxValue } from "../utils/calculatePurchaseTaxValue";
 import { listProductsService } from "./products.services";
 import { listUsersService } from "./users.services";
 
@@ -20,10 +21,7 @@ const createPurchaseService = async ({userId, productsIds}: IPurchaseRequestData
         throw new AppError('Some or all products not found', 404)
     }
 
-    const productsSum: number = userProducts.reduce((acc, cur) => acc + cur.price, 0)
-    const discount: number = (productsSum *(Number(user!.tax)/100))/100
-
-    const purchaseValue: Purchase = productsSum - discount
+    const purchaseValue:Purchase = calculatePurchaseTaxValue(user.tax, userProducts)
 
     return purchaseValue
 }

@@ -21,7 +21,7 @@ const createPurchaseService = async ({userId, productsIds}: IPurchaseRequestData
         throw new AppError('Some or all products not found', 404)
     }
 
-    const purchaseValue:Purchase = calculatePurchaseTaxValue(user.tax, userProducts)
+    const purchaseValue:Purchase = calculatePurchaseTaxValue(user, userProducts)
 
     return purchaseValue
 }

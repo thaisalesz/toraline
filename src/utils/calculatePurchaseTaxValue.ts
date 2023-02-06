@@ -1,11 +1,19 @@
-import { IProduct, Purchase } from "../interfaces";
+import { IProduct, IUser, Purchase } from "../interfaces";
 
 
-export const calculatePurchaseTaxValue = (tax: string, products:IProduct[]): Purchase => {
-    const productsSum: number = products.reduce((acc, cur) => acc + cur.price, 0)
-    const discount: number = (productsSum *(Number(tax)/100))/100
+export const calculatePurchaseTaxValue = (user:IUser, products:IProduct[]): Purchase => {
+    const productsSum: number = products.reduce((acc, cur) => acc + cur.price, 0)    
+    const tax = Number(user.tax)
 
-    const purchaseValue: Purchase = productsSum - discount
+    let purchaseValue:Purchase = productsSum
 
-    return purchaseValue
+    if(tax > 100){
+        const purchaseTaxTotal: number = (productsSum *(tax-100))/100
+        purchaseValue = productsSum + purchaseTaxTotal
+    }else if(tax < 100){
+        const purchaseDiscountTotal: number = (productsSum *(tax))/100
+        purchaseValue = productsSum - purchaseDiscountTotal
+    }
+
+    return Math.round(purchaseValue*100)/100
 }

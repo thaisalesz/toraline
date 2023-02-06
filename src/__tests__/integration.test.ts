@@ -78,7 +78,7 @@ describe("App integration tests", () => {
 
         expect(typeof res.body).toBe("number")
         expect(res.body).toEqual(calculatePurchaseTaxValue(
-            responseUsers[0].tax,
+            responseUsers[0],
             [
                 responseProducts[0],
                 responseProducts[1],
